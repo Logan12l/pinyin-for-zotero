@@ -1,0 +1,132 @@
+name: Release
+
+# 打 tag（形如 v1.2.1）即自动发版：
+#   1) 把 manifest.json 的 update_url 指向本仓库固定标签 release 下的 update.json
+#   2) 打包 zotero-pinyin-column.xpi
+#   3) 创建/更新对应版本的 Release 并附上 xpi
+#   4) 更新固定标签 release 下的 update.json（Zotero 自动更新用）
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 读取插件元信息
+        id: meta
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          m = json.load(open('manifest.json', encoding='utf-8'))
+          z = m['applications']['zotero']
+          print('version=' + m['version'])
+          print('addon_id=' + z['id'])
+          print('min=' + str(z.get('strict_min_version', '7.0')))
+          print('max=' + str(z.get('strict_max_version', '')))
+          print('xpi=zotero-pinyin-column.xpi')
+          PY
+          echo "--- 本次版本信息 ---"
+          cat "$GITHUB_OUTPUT"
+
+      - name: 打包 xpi 并生成 update.json
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, zipfile
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          root = pathlib.Path('.')
+
+          # 1) 注入真实的 update_url（源码里保留 OWNER/REPO 占位）
+          manifest_path = root / 'manifest.json'
+          manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+          zinfo = manifest['applications']['zotero']
+          zinfo['update_url'] = (
+              f'https://github.com/{repo}/releases/download/release/update.json'
+          )
+          manifest_path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          print('update_url =', zinfo['update_url'])
+
+          # 2) 打包 xpi：排除开发用文件，条目名不带 ./ 前缀
+          skip_dirs = {'.git', '.github'}
+          skip_files = {'.gitignore', 'update.json'}
+          skip_suffix = ('.xpi', '.zip')
+          out = 'zotero-pinyin-column.xpi'
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+              for path in sorted(root.rglob('*')):
+                  if not path.is_file():
+                      continue
+                  rel = path.relative_to(root)
+                  if any(part in skip_dirs for part in rel.parts):
+                      continue
+                  if path.name in skip_files or path.name.endswith(skip_suffix):
+                      continue
+                  zf.write(path, rel.as_posix())
+          with zipfile.ZipFile(out) as zf:
+              print('xpi 内文件：')
+              for name in zf.namelist():
+                  print('   ', name)
+
+          # 3) 生成 Zotero 更新清单
+          version = manifest['version']
+          update = {
+              'addons': {
+                  zinfo['id']: {
+                      'updates': [
+                          {
+                              'version': version,
+                              'update_link': (
+                                  f'https://github.com/{repo}/releases/download/'
+                                  f'v{version}/{out}'
+                              ),
+                              'applications': {
+                                  'zotero': {
+                                      'strict_min_version': zinfo.get('strict_min_version', '7.0'),
+                                      'strict_max_version': zinfo.get('strict_max_version', ''),
+                                  }
+                              },
+                          }
+                      ]
+                  }
+              }
+          }
+          pathlib.Path('update.json').write_text(
+              json.dumps(update, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          print('update.json 内容：')
+          print(pathlib.Path('update.json').read_text(encoding='utf-8'))
+          PY
+
+      - name: 发布或更新该版本的 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.meta.outputs.version }}"
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "Release v$VERSION 已存在，仅替换附件"
+            gh release upload "v$VERSION" zotero-pinyin-column.xpi --clobber
+          else
+            gh release create "v$VERSION" zotero-pinyin-column.xpi \
+              --title "v$VERSION" --notes-file CHANGELOG.md
+          fi
+
+      - name: 更新固定标签 release 下的 update.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view release >/dev/null 2>&1; then
+            gh release upload release update.json --clobber
+          else
+            gh release create release \
+              --title "更新清单（请勿删除）" \
+              --notes "Zotero 自动更新使用的 update.json 固定在此标签下，请勿删除此 Release。"
+            gh release upload release update.json --clobber
+          fi
