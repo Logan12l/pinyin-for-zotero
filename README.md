@@ -1,7 +1,7 @@
-[README.md](https://github.com/user-attachments/files/33396304/README.md)
+[README.md](https://github.com/user-attachments/files/33396815/README.md)
 # pinyin-for-zotero
 
-帮助识别中文文献特殊姓氏：让 Zotero 里中文作者的排序按拼音生效。
+帮助修正 Zotero 中文文献多音字作者姓氏拼音排序。
 
 比如"曾"作姓氏读 zēng，系统却按常用读音 céng 排，结果曾向红跑到 C 区——
 装上本插件后它会出现在 Z 位置，中文条目仍然聚成一堆。
