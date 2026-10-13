@@ -1,4 +1,5 @@
-# 作者拼音排序（Zotero 插件）
+[README.md](https://github.com/user-attachments/files/33395563/README.md)
+# pinyin-for-zotero（作者拼音排序）
 
 让 Zotero 里中文作者的排序按拼音生效，并修正多音字姓氏带来的错位——
 比如"曾"作姓氏读 zēng，但系统按常用读音 céng 排，结果跑到 C 区。
