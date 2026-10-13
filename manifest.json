@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "pinyin-for-zotero",
-  "version": "1.2.4",
-  "description": "帮助识别中文文献特殊姓氏",
+  "version": "1.0.1",
+  "description": "帮助修正Zotero中文文献多音字作者姓氏拼音排序。",
   "homepage_url": "https://github.com/Logan12l/pinyin-for-zotero",
   "author": "Logan12l",
   "icons": {
