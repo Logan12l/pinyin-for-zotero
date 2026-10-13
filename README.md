@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/33395742/README.md)
+[README.md](https://github.com/user-attachments/files/33396304/README.md)
 # pinyin-for-zotero
 
 帮助识别中文文献特殊姓氏：让 Zotero 里中文作者的排序按拼音生效。
@@ -16,7 +16,7 @@
 
 ## 安装
 
-1. 从 [Releases](../../releases) 下载最新的 `zotero-pinyin-column.xpi`
+1. 从 [Releases](../../releases) 下载最新的 `pinyin-for-zotero.xpi`
 2. Zotero：工具 → 插件 → 右上角齿轮 → `Install Plugin From File…` → 选择该文件
 3. 重启 Zotero，并确认插件是**启用**状态
 
