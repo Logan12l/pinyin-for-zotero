@@ -1,4 +1,4 @@
-[RELEASING.md](https://github.com/user-attachments/files/33396325/RELEASING.md)
+[RELEASING.md](https://github.com/user-attachments/files/33396835/RELEASING.md)
 # 从零开始：把插件发布到 GitHub，并提交到 Zotero 中文社区
 
 这份文档写给第一次发布插件的人。全程只需要一个 GitHub 账号，不需要懂编程。
@@ -9,7 +9,7 @@
 
 - **仓库（Repository）**：你在 GitHub 上的一个"文件夹"，存放插件的全部文件，别人可以浏览和下载。
 - **Release（发行版）**：仓库里的"发布页面"，用来挂出可下载的 `.xpi` 安装包。
-- **tag（标签）**：给某次提交起的名字，例如 `v1.2.1`。**发版 = 打一个 tag**；
+- **tag（标签）**：给某次提交起的名字，例如 `v1.0.1`。**发版 = 打一个 tag**；
   本仓库的自动化流程就是靠 tag 触发的。
 - **Actions**：GitHub 自带的自动化机器人。本项目已配置好：**你只要打 tag，
   它自动打包 xpi、发 Release、更新 update.json**。
@@ -100,14 +100,14 @@ git push -u origin main
 ### 5.1 网页操作（最简单）
 
 1. 打开仓库页面右侧的 `Releases` → `Draft a new release`。
-2. `Choose a tag` → 输入 `v1.2.1` → 点 `Create new tag: v1.2.1 on publish`。
+2. `Choose a tag` → 输入 `v1.0.1` → 点 `Create new tag: v1.0.1 on publish`。
    （**tag 名要和 `manifest.json` 里的 version 一致，前面加一个小写 v**。）
-3. 标题写 `v1.2.1`，说明可以留空或写一句更新摘要，点 `Publish release`。
+3. 标题写 `v1.0.1`，说明可以留空或写一句更新摘要，点 `Publish release`。
 
 ### 5.2 命令行
 
 ```bash
-git tag v1.2.1
+git tag v1.0.1
 git push origin main --tags
 ```
 
@@ -118,7 +118,7 @@ git push origin main --tags
 1. 把 `manifest.json` 里的 `update_url` 指向
    `https://github.com/<你>/<仓库>/releases/download/release/update.json`；
 2. 打包出 `pinyin-for-zotero.xpi`（只包含插件文件）；
-3. 在 `v1.2.1` 这个 Release 上附上该 xpi；
+3. 在 `v1.0.1` 这个 Release 上附上该 xpi；
 4. 新建一个固定标签 `release` 的 Release，里面放 `update.json`（以后每次发版只更新它）。
    它会被标记为 **Pre-release**——这是刻意的：否则它会抢走 `vX.Y.Z` 的 "Latest" 徽章，
    社区收录工具就会把版本号抓错。**已装的用户不受影响**，Zotero 只按固定网址读取 `update.json`。
@@ -128,7 +128,7 @@ git push origin main --tags
 - `Releases` 页面能看到版本号发行版，里面有 `pinyin-for-zotero.xpi` 可下载；
 - 还有一个标题为"更新清单（请勿删除）"的 `release` 发行版，里面有 `update.json`，
   标记为 **Pre-release**（正常现象），**不要删除它**——Zotero 的自动更新靠它。
-  真正的 "Latest" 徽章应该在 `v1.2.1` 上。
+  真正的 "Latest" 徽章应该在 `v1.0.1` 上。
 
 > 第一次运行时如果 Actions 提示需要授权/启用，按提示允许即可（个人仓库默认是开启的）。
 
@@ -148,11 +148,11 @@ git push origin main --tags
 
 ## 7. 以后更新版本怎么发
 
-1. 打开 `manifest.json`，把 `"version": "1.2.1"` 改成新版本号，例如 `1.2.2`。
+1. 打开 `manifest.json`，把 `"version": "1.0.1"` 改成新版本号，例如 `1.0.2`。
 2. 在 `CHANGELOG.md` 顶部加一段本次更新说明（这段文字会出现在 Release 说明里）。
 3. 提交改动（GitHub Desktop：填说明 → Commit → Push；或命令行 `git commit` + `git push`）。
-4. 打新 tag 并推送：网页上再走一次第 5.1 步（tag 填 `v1.2.2`），
-   或命令行 `git tag v1.2.2 && git push origin main --tags`。
+4. 打新 tag 并推送：网页上再走一次第 5.1 步（tag 填 `v1.0.2`），
+   或命令行 `git tag v1.0.2 && git push origin main --tags`。
 5. 机器人会自动打包发布，并更新 `update.json`。
 6. 已安装旧版本的用户：Zotero 会定期检查更新并提示；用户也可以手动到插件管理器的
    齿轮菜单里点 `Check for Updates`。
@@ -219,7 +219,7 @@ git push origin main --tags
 
 ## 10. 发版前的检查清单
 
-- [ ] `manifest.json` 的 `version` 已改成新版本号，且与要打的 tag 一致（`1.2.1` ↔ `v1.2.1`）
+- [ ] `manifest.json` 的 `version` 已改成新版本号，且与要打的 tag 一致（`1.0.1` ↔ `v1.0.1`）
 - [ ] `CHANGELOG.md` 已写本次更新说明
 - [ ] 仓库里**没有**个人数据文件（数据库、导出名单、测试目录）
 - [ ] `LICENSE` 与 `THIRD-PARTY-NOTICES.txt` 仍在仓库里（对外发布需要）
