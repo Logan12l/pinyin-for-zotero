@@ -1,0 +1,16 @@
+# 打包产物
+*.xpi
+*.zip
+update.json
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 临时与个人数据（切勿提交）
+work/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
