@@ -1,4 +1,22 @@
+[CHANGELOG.md](https://github.com/user-attachments/files/33396345/CHANGELOG.md)
 # 更新日志
+
+## 1.2.4
+
+- 仓库重命名为 `pinyin-for-zotero`，安装包文件名同步由 `zotero-pinyin-column.xpi`
+  改为 **`pinyin-for-zotero.xpi`**，插件清单里的主页地址同步更新。
+- 插件 id 未改动，已安装用户会正常收到本次更新；更新清单中的下载地址会自动切到新仓库与新文件名。
+
+## 1.2.3
+
+- 插件名称改为 **pinyin-for-zotero**，Zotero 插件列表里显示的简介简化为"帮助识别中文文献特殊姓氏"。
+- 插件 id、仓库名、文件名与偏好项前缀**均未改动**，已安装的用户会正常收到这次更新。
+
+## 1.2.2
+
+- 修正插件清单里的作者与主页地址（GitHub 用户名拼写有误，主页链接此前打不开）。
+- 修正自动化发布流程：`release` 标签下的"更新清单"发行版现在标记为 **Pre-release**，
+  避免它抢占版本发行版的 "Latest" 徽章（那会让社区收录工具抓错版本与下载链接）。
 
 ## 1.2.1
 
