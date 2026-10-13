@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "pinyin-for-zotero",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "帮助识别中文文献特殊姓氏",
-  "homepage_url": "https://github.com/Logan12l/zotero-pinyin-column",
+  "homepage_url": "https://github.com/Logan12l/pinyin-for-zotero",
   "author": "Logan12l",
   "icons": {
     "48": "content/icon.svg",
