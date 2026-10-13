@@ -115,7 +115,7 @@ jobs:
             gh release upload "v$VERSION" zotero-pinyin-column.xpi --clobber
           else
             gh release create "v$VERSION" zotero-pinyin-column.xpi \
-              --title "v$VERSION" --notes-file CHANGELOG.md
+              --title "v$VERSION" --notes-file CHANGELOG.md --latest
           fi
 
       - name: 更新固定标签 release 下的 update.json
@@ -123,10 +123,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if gh release view release >/dev/null 2>&1; then
+            # 确保它不被当成"最新发布"（否则会抢走 vX.Y.Z 的 Latest 徽章，社区收录工具会抓错）
+            gh release edit release --prerelease
             gh release upload release update.json --clobber
           else
             gh release create release \
               --title "更新清单（请勿删除）" \
+              --prerelease \
               --notes "Zotero 自动更新使用的 update.json 固定在此标签下，请勿删除此 Release。"
             gh release upload release update.json --clobber
           fi
