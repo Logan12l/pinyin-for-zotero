@@ -1,3 +1,4 @@
+[RELEASING.md](https://github.com/user-attachments/files/33396325/RELEASING.md)
 # 从零开始：把插件发布到 GitHub，并提交到 Zotero 中文社区
 
 这份文档写给第一次发布插件的人。全程只需要一个 GitHub 账号，不需要懂编程。
@@ -116,15 +117,18 @@ git push origin main --tags
 
 1. 把 `manifest.json` 里的 `update_url` 指向
    `https://github.com/<你>/<仓库>/releases/download/release/update.json`；
-2. 打包出 `zotero-pinyin-column.xpi`（只包含插件文件）；
+2. 打包出 `pinyin-for-zotero.xpi`（只包含插件文件）；
 3. 在 `v1.2.1` 这个 Release 上附上该 xpi；
 4. 新建一个固定标签 `release` 的 Release，里面放 `update.json`（以后每次发版只更新它）。
+   它会被标记为 **Pre-release**——这是刻意的：否则它会抢走 `vX.Y.Z` 的 "Latest" 徽章，
+   社区收录工具就会把版本号抓错。**已装的用户不受影响**，Zotero 只按固定网址读取 `update.json`。
 
 ### 5.4 检查成果
 
-- `Releases` 页面能看到 `v1.2.1`，里面有 `zotero-pinyin-column.xpi` 可下载；
+- `Releases` 页面能看到版本号发行版，里面有 `pinyin-for-zotero.xpi` 可下载；
 - 还有一个标题为"更新清单（请勿删除）"的 `release` 发行版，里面有 `update.json`，
-  **不要删除它**——Zotero 的自动更新靠它。
+  标记为 **Pre-release**（正常现象），**不要删除它**——Zotero 的自动更新靠它。
+  真正的 "Latest" 徽章应该在 `v1.2.1` 上。
 
 > 第一次运行时如果 Actions 提示需要授权/启用，按提示允许即可（个人仓库默认是开启的）。
 
@@ -203,6 +207,9 @@ git push origin main --tags
 - **Zotero 提示无法安装 / 不兼容**：本插件要求 **Zotero 10**（清单里
   `strict_min_version` 为 `10.0`）；确认你的 Zotero 版本与 `strict_max_version`
   （见 [COMPATIBILITY.md](COMPATIBILITY.md) 第二节）。
+- **Releases 里那个"更新清单"抢了 Latest 徽章**：打开该发行版 → 右上角铅笔图标
+  （Edit release）→ 勾选 `Set as a pre-release` → `Update release`。
+  徽章会自动回到版本号发行版上。（本仓库的自动化脚本已修正，新版本不会再出现。）
 - **用户装不上旧版本**：Zotero 可能拒绝"降级安装"；让用户先在插件列表里移除新版本，
   再安装旧版本。
 - **装了但排序没变化**：按 [COMPATIBILITY.md](COMPATIBILITY.md) 第五节的"自检方法"看日志与开关。
