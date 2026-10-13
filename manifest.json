@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "作者拼音排序 (Creator Pinyin Sort)",
+  "version": "1.2.1",
+  "description": "修正中文文献的拼音排序：多音字姓氏（如“曾”）不再排错，中文条目整体聚拢；并接入 Word / WPS，刷新文档时同步修正参考文献与正文引文顺序。仅支持 Zotero 10。",
+  "homepage_url": "https://github.com/Logan121/zotero-pinyin-column",
+  "author": "Logan121",
+  "icons": {
+    "48": "content/icon.svg",
+    "96": "content/icon.svg"
+  },
+  "applications": {
+    "zotero": {
+      "id": "creator-pinyin-sort@local",
+      "update_url": "https://github.com/OWNER/REPO/releases/download/release/update.json",
+      "strict_min_version": "10.0",
+      "strict_max_version": "10.*"
+    }
+  }
+}

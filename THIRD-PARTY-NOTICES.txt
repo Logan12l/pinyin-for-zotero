@@ -1,0 +1,62 @@
+第三方数据与声明
+================
+
+本插件（作者拼音排序）自身的代码以 GNU AGPL-3.0 发布，见 LICENSE。
+插件内嵌的下列第三方数据仍归其原作者所有，按其原始许可使用。
+
+------------------------------------------------------------
+1. 汉字读音字典与姓氏读音表
+------------------------------------------------------------
+来源：node-pinyin（npm 包名 pinyin）
+      项目主页 https://github.com/hotoo/pinyin
+      作者 闲耘（hotoo）
+许可：MIT License
+
+说明：content/data.js 中的汉字读音表（ZPS_TABLE_A / ZPS_TABLE_B）与
+      姓氏读音表（ZPS_SURNAMES / ZPS_COMPOUND_SURNAMES）由 node-pinyin 的
+      发行数据生成（生成时使用的是同版本数据的本地副本，取自 Better BibTeX
+      所打包的同一份 node-pinyin 数据；Better BibTeX 亦为 MIT 许可）。
+      本插件未包含 node-pinyin 的运行时代码，只使用了其数据。
+      ZPS_SURNAME_EXTRA 中的少量姓氏修正由本插件作者依据常见姓氏读音编写。
+
+以下是 node-pinyin 的许可全文：
+
+MIT License
+
+Copyright (c) 2026 闲耘™
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+------------------------------------------------------------
+2. 关于 Zotero 与 citeproc-js
+------------------------------------------------------------
+Zotero 客户端源码以 GNU AGPL-3.0 发布
+（见 https://www.zotero.org/support/licensing）；
+其内置的 citeproc-js 为 CPAL-1.0 / AGPL-3.0 双许可。
+
+本插件是独立的第三方插件：不包含、也不分发 Zotero 或 citeproc-js 的源代码，
+仅通过 Zotero 的 JavaScript API 与其交互（含为修正排序而包装公开可达的
+排序函数）。插件采用与 Zotero 相同的 AGPL-3.0 许可。
+
+------------------------------------------------------------
+3. 其它
+------------------------------------------------------------
+插件图标（content/icon.svg）由本插件作者绘制。
+早期版本曾参考 tiny-pinyin（MIT，https://github.com/creeperyang/pinyin）
+的音节边界表思路，相关代码与数据均已不再包含在本插件中。
