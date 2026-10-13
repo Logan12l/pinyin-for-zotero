@@ -2,7 +2,7 @@ name: Release
 
 # 打 tag（形如 v1.2.1）即自动发版：
 #   1) 把 manifest.json 的 update_url 指向本仓库固定标签 release 下的 update.json
-#   2) 打包 zotero-pinyin-column.xpi
+#   2) 打包 pinyin-for-zotero.xpi
 #   3) 创建/更新对应版本的 Release 并附上 xpi
 #   4) 更新固定标签 release 下的 update.json（Zotero 自动更新用）
 on:
@@ -30,12 +30,14 @@ jobs:
           print('addon_id=' + z['id'])
           print('min=' + str(z.get('strict_min_version', '7.0')))
           print('max=' + str(z.get('strict_max_version', '')))
-          print('xpi=zotero-pinyin-column.xpi')
+          print('xpi=pinyin-for-zotero.xpi')
           PY
           echo "--- 本次版本信息 ---"
           cat "$GITHUB_OUTPUT"
 
       - name: 打包 xpi 并生成 update.json
+        env:
+          XPI_NAME: ${{ steps.meta.outputs.xpi }}
         run: |
           python3 - <<'PY'
           import json, os, pathlib, zipfile
@@ -59,7 +61,7 @@ jobs:
           skip_dirs = {'.git', '.github'}
           skip_files = {'.gitignore', 'update.json'}
           skip_suffix = ('.xpi', '.zip')
-          out = 'zotero-pinyin-column.xpi'
+          out = os.environ['XPI_NAME']
           with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
               for path in sorted(root.rglob('*')):
                   if not path.is_file():
@@ -110,11 +112,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="${{ steps.meta.outputs.version }}"
+          XPI="${{ steps.meta.outputs.xpi }}"
           if gh release view "v$VERSION" >/dev/null 2>&1; then
             echo "Release v$VERSION 已存在，仅替换附件"
-            gh release upload "v$VERSION" zotero-pinyin-column.xpi --clobber
+            gh release upload "v$VERSION" "$XPI" --clobber
           else
-            gh release create "v$VERSION" zotero-pinyin-column.xpi \
+            gh release create "v$VERSION" "$XPI" \
               --title "v$VERSION" --notes-file CHANGELOG.md --latest
           fi
 
